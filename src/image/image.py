@@ -1,13 +1,12 @@
 from utils import img2base64
 from utils import get_json, post_json
 
-import requests
 import json
 
 class Image(object):
 
-    def __init__(self, filename, face_app_id, face_app_key, face_secret_key):
-        self.face_app_id, self.face_app_key, self.face_secret_key = face_app_id, face_app_key, face_secret_key
+    def __init__(self, filename, app_id, app_key, secret_key):
+        self.app_id, self.app_key, self.secret_key = app_id, app_key, secret_key
         self.filename = filename
         self.base64 = img2base64(filename)
 
@@ -21,7 +20,7 @@ class Image(object):
     def refresh_token(self):
         res = None
 
-        url = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + self.face_app_key + '&client_secret=' + self.face_secret_key
+        url = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + self.app_key + '&client_secret=' + self.secret_key
         data = json.loads(get_json(url))
         if data is not None:
             res = data.get('access_token')
@@ -47,8 +46,7 @@ class Image(object):
         return res
 
 if '__main__' == __name__:
-    from config import FACE_APP_ID, FACE_APP_KEY, FACE_SECRET_KEY, TMP_PATH
-    img1 = Image('mj1.jpg', FACE_APP_ID, FACE_APP_KEY, FACE_SECRET_KEY)
-    img2 = Image('mj2.jpg', FACE_APP_ID, FACE_APP_KEY, FACE_SECRET_KEY)
+    from config import APP_ID, APP_KEY, SECRET_KEY
+    img = Image('mj1.jpg', APP_ID, APP_KEY, SECRET_KEY)
 
     print(img1.compare(img2))

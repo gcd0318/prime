@@ -6,8 +6,8 @@ import json
 
 class Face(object):
 
-    def __init__(self, filename, face_app_id, face_app_key, face_secret_key):
-        self.face_app_id, self.face_app_key, self.face_secret_key = face_app_id, face_app_key, face_secret_key
+    def __init__(self, filename, app_id, app_key, secret_key):
+        self.app_id, self.app_key, self.secret_key = app_id, app_key, secret_key
         self.filename = filename
         self.base64 = img2base64(filename)
 
@@ -22,7 +22,7 @@ class Face(object):
                 aface.__dict__()
             ]
         )
-        token = refresh_token(url='https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + self.face_app_key + '&client_secret=' + self.face_secret_key,
+        token = refresh_token(url='https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + self.app_key + '&client_secret=' + self.secret_key,
             key='access_token')
         url = "https://aip.baidubce.com/rest/2.0/face/v3/match?access_token=" + token
         headers = {'Content-Type': 'application/json'}
