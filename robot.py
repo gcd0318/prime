@@ -11,7 +11,7 @@ import os
 import time
 import wave
 
-class Prime(GCAI):
+class Robot(GCAI):
     def __init__(self, name):
         GCAI.__init__(self)
         self.name = name
@@ -112,5 +112,5 @@ class Prime(GCAI):
 
 
 if __name__ == "__main__":
-    p = Prime('大丞相')
-    p.chat()
+    prime = Robot('大丞相')
+    prime.chat()
