@@ -1,22 +1,29 @@
 import json
 import requests
 
-from utils import timestamp, weekday
+from utils import req, timestamp, weekday
 
 KEYS = ['天气', '时间']
 
 class GCAI(object):
 
-    def req(self, url):
-        res = None
-        resp = requests.get(url)
-        if 200 == resp.status_code:
-            res = resp.text
-        return res
+    def __init__(self, qad=None):
+        self.qad = {
+            '你知道什么': ' '.join(KEYS),
+            '没事了': '再见',
+            '没事儿了': '再见',
+            '': '听不懂'
+        }
+
+        for key in KEYS:
+            self.qad[key] = ''
+
+        if qad is not None:
+            self.qad.update(qad)
 
     def get_weather(self):
         res = '不知道'
-        data = json.loads(self.req('https://free-api.heweather.net/s6/weather/now?location=beijing&key=44061e474705463f82abf7620972991e'))
+        data = json.loads(get_json('https://free-api.heweather.net/s6/weather/now?location=beijing&key=44061e474705463f82abf7620972991e'))
         if data is not None:
             j = data.get('HeWeather6')[0]
             loc = j.get('basic').get('location')
@@ -30,7 +37,7 @@ class GCAI(object):
         return timestamp(fmt='%Y年%m月%d日%H时%M分%S秒') + '星期' + weekday()
 
     def _baidu(self, msg):
-        data = self.req('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=' + msg + '&cb=showData')[len('showData('): -2]
+        data = get_json('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=' + msg + '&cb=showData')[len('showData('): -2]
         l = eval(data[data.find('s:[') + len('s:[')-1: -1])
         return ' '.join(l)
 
@@ -99,7 +106,19 @@ class GCAI(object):
             res = res[:1000]
         return res
 
+    def answer(self, msg=''):
+        res = self.qad.get(msg)
+
+        if msg in self.qad.keys():
+            if '天气' in msg:
+                res = self.get_weather()
+            elif '时间' in msg:
+                res = self.get_datetime()
+        elif res is None:
+            res = self.search(msg)
+        return res
+
 
 if __name__ == "__main__":
     g = GCAI()
-    print(g.search('北京', 'baidu'))
+    print(g.answer('时间'))
