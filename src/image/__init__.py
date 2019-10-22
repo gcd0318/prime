@@ -11,8 +11,6 @@ from aip import AipImageClassify
 from base.utils import img2base64, access_token, get_img_content
 from base.utils import get_json, post_json
 
-import json
-
 class Image(object):
 
     def __init__(self, filename, regs):
@@ -45,8 +43,6 @@ class Image(object):
         if options is None:
             options = {}
         return self.client.logoSearch(self.img, options)
-
-
 
 if '__main__' == __name__:
     from config import IMAGE_REGS
