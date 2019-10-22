@@ -17,8 +17,8 @@ class Image(object):
         app_id, app_key, secret_key = regs
 #        self.app_id, self.app_key, self.secret_key = app_id, app_key, secret_key
         self.filename = filename
-        self.img = get_img_content(filename)
-        self.base64 = img2base64(self.img)
+        self.image = get_img_content(filename)
+        self.base64 = img2base64(self.image)
         self.client = AipImageClassify(app_id, app_key, secret_key)
 
     def is_same_as(self, image):
@@ -46,12 +46,12 @@ class Image(object):
     def find(self, options=None):
         if options is None:
             options = {}
-        return self.client.advancedGeneral(self.img, options)        
+        return self.client.advancedGeneral(self.image, options)        
 
     def find_logo(self, options=None):
         if options is None:
             options = {}
-        r = self.client.logoSearch(self.img, options)
+        r = self.client.logoSearch(self.image, options)
         result_num = r.get('result_num')
         result = r.get('result')
         return result_num, result
