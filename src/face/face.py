@@ -1,7 +1,6 @@
-from utils import img2base64, refresh_token
-from utils import get_json, post_json
+from base.utils import img2base64, refresh_token
+from base.utils import get_json, post_json
 
-import requests
 import json
 
 class Face(object):
