@@ -6,7 +6,7 @@ import os
 import sys
 sys.path.append(os.path.abspath('..'))
 
-from base.utils import img2base64, refresh_token
+from base.utils import img2base64, access_token
 from base.utils import get_json, post_json
 
 import json
@@ -29,7 +29,7 @@ class Face(object):
                 aface.__dict__()
             ]
         )
-        token = refresh_token(url='https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + self.app_key + '&client_secret=' + self.secret_key,
+        token = access_token(url='https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + self.app_key + '&client_secret=' + self.secret_key,
             key='access_token')
         url = "https://aip.baidubce.com/rest/2.0/face/v3/match?access_token=" + token
         headers = {'Content-Type': 'application/json'}

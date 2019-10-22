@@ -43,7 +43,7 @@ def img2base64(img_fn):
         res = base64.b64encode(f.read())
     return res
 
-def refresh_token(url, key):
+def access_token(url, key='access_token'):
     res = None
     data = json.loads(get_json(url))
     if data is not None:
