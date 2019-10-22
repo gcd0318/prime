@@ -52,24 +52,28 @@ class Face(object):
     '''
 
     def detect(self, options=None):
+        face_num, faces = None, None
         if options is None:
             options = {}
 #            options = {"face_field": "age", "max_face_num": 2, "face_type": "LIVE", "liveness_control": "LOW"}
-        return self.client.detect(self.image, self.image_type, options)
+        r = self.client.detect(self.image, self.image_type, options)
+        print(r)
+        if r is not None:
+            result = r.get('result')
+            face_num, faces = result.get('face_num'), result.get('face_list')
+        return face_num, faces
 
     def compare(self, aface):
-        data = self.client.match([self.__dict__(), aface.__dict__()])
-        if data is not None:
-            error_code = data.get('error_code')
-            error_msg = data.get('error_msg')
-            result = data.get('result')
-            if (0 == error_code) and ('SUCCESS' == error_msg):
+        r = self.client.match([self.__dict__(), aface.__dict__()])
+        if r is not None:
+            result = r.get('result')
+            if (0 == r.get('error_code')) and ('SUCCESS' == r.get('error_msg')):
                 res = result.get('score')
         return res
 
     def register(self, options=None):
         if options is None:
-            options = {}
+            options = {'max_face_num': 10}
 #            options = {"user_info": "user's info", "quality_control": "NORMAL", "liveness_control": "LOW", "action_type": "REPLACE"}
         self.client.addUser(self.image, self.imageType, groupId, userId, options)
 
