@@ -37,10 +37,19 @@ def weekday(t=None):
         res = str(d + 1)
     return res
 
-def img2base64(img_fn):
+def get_img_content(img_fn):
     res = None
     with open(img_fn, 'rb') as f:
-        res = base64.b64encode(f.read())
+        res = f.read()
+    return res
+
+def img2base64(img):
+    return base64.b64encode(img)
+
+def base64img(img_fn):
+    res = get_img_content(img_fn)
+    if res is not None:
+        res = img2base64(res)
     return res
 
 def access_token(url, key='access_token'):
