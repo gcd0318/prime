@@ -39,14 +39,26 @@ class Image(object):
         return res
     '''
 
+#    def _result(self, result_num, result):
+#        for i in range(result_num):
+#            r = result[i]
+
+    def find(self, options=None):
+        if options is None:
+            options = {}
+        return self.client.advancedGeneral(self.img, options)        
+
     def find_logo(self, options=None):
         if options is None:
             options = {}
-        return self.client.logoSearch(self.img, options)
+        r = self.client.logoSearch(self.img, options)
+        result_num = r.get('result_num')
+        result = r.get('result')
+        return result_num, result
 
 if '__main__' == __name__:
     from config import IMAGE_REGS
     img1 = Image('mj1.jpg', IMAGE_REGS)
 #    img2 = Image('mj2.jpg', IMAGE_REGS)
 
-    print(img1.find_logo())
+    print(img1.find())
