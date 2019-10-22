@@ -1,11 +1,15 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 import json
 import requests
 
-from utils import req, timestamp, weekday
+from utils import get_json, timestamp, weekday
 
 KEYS = ['天气', '时间']
 
-class GCAI(object):
+class AI(object):
 
     def __init__(self, qad=None):
         self.qad = {
@@ -120,5 +124,5 @@ class GCAI(object):
 
 
 if __name__ == "__main__":
-    g = GCAI()
-    print(g.answer('时间'))
+    a = AI()
+    print(a.answer('时间'))
