@@ -14,14 +14,19 @@ from aip import AipFace
 
 class Face(object):
 
-    def __init__(self, filename, regs, face_type='LIVE', quality_control='LOW'):
+    def __init__(self, regs, filename, image_type="BASE64", face_type='LIVE', quality_control='LOW'):
         app_id, api_key, secret_key = regs
-        self.filename, self.face_type, self.quality_control = filename, face_type, quality_control
-        self.base64 = base64img(filename)
+        self.filename, self.image_type, self.face_type, self.quality_control = filename, image_type, face_type, quality_control
+        if 'BASE64' == image_type:
+            self.image = base64img(filename).decode('utf-8')
+        elif 'URL' == image_type:
+            self.image = filename
+        else:
+            self.image = None
         self.client = AipFace(app_id, api_key, secret_key)
 
     def __dict__(self):
-        return {"image": self.base64.decode('utf-8'), "image_type": "BASE64", "face_type": self.face_type, "quality_control": self.quality_control}
+        return {"image": self.image, "image_type": self.image_type, "face_type": self.face_type, "quality_control": self.quality_control}
 
     '''
     def _compare(self, aface):
@@ -46,6 +51,12 @@ class Face(object):
         return res
     '''
 
+    def detect(self, options=None):
+        if options is None:
+            options = {}
+#            options = {"face_field": "age", "max_face_num": 2, "face_type": "LIVE", "liveness_control": "LOW"}
+        return self.client.detect(self.image, self.image_type, options)
+
     def compare(self, aface):
         data = self.client.match([self.__dict__(), aface.__dict__()])
         if data is not None:
@@ -56,10 +67,16 @@ class Face(object):
                 res = result.get('score')
         return res
 
+    def register(self, options=None):
+        if options is None:
+            options = {}
+#            options = {"user_info": "user's info", "quality_control": "NORMAL", "liveness_control": "LOW", "action_type": "REPLACE"}
+        self.client.addUser(self.image, self.imageType, groupId, userId, options)
 
 if '__main__' == __name__:
     from config import FACE_REGS
-    f1 = Face('mj1.jpg', FACE_REGS)
-    f2 = Face('mj2.jpg', FACE_REGS)
+    f1 = Face(filename='mj1.jpg', regs=FACE_REGS)
+    f2 = Face(filename='mj2.jpg', regs=FACE_REGS)
 
-    print(f1.compare(f2))
+#    print(f1.compare(f2))
+    print(f1.detect())
