@@ -19,8 +19,8 @@ class Voice(object):
 
     def __init__(self, regs):
         self.rec = Recorder()
-        app_ip, api_key, secret_key = regs
-        self.client = AipSpeech(app_ip, api_key, secret_key)
+        app_id, api_key, secret_key = regs
+        self.client = AipSpeech(app_id, api_key, secret_key)
 
     def listen(self):
         input('enter to start:')
