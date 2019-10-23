@@ -71,11 +71,13 @@ class Face(object):
                 res = result.get('score')
         return res
 
-    def register(self, options=None):
+    def register(self, group_id, user_id, options=None):
         if options is None:
-            options = {'max_face_num': 10}
 #            options = {"user_info": "user's info", "quality_control": "NORMAL", "liveness_control": "LOW", "action_type": "REPLACE"}
-        self.client.addUser(self.image, self.imageType, groupId, userId, options)
+             options = {}
+        if not(group_id in self.client.getGroupList(, {"length": 50})):
+            self.client.groupAdd(group_id)
+        self.client.addUser(self.image, self.imageType, group_id, user_id, options)
 
 if '__main__' == __name__:
     from config import FACE_REGS
@@ -83,4 +85,4 @@ if '__main__' == __name__:
     f2 = Face(filename='mj2.jpg', regs=FACE_REGS)
 
 #    print(f1.compare(f2))
-    print(f1.detect())
+    print(f1.detect(options={'max_face_num': 10}))
