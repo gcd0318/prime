@@ -2,7 +2,7 @@ from config import TMP_PATH, FACE_REGS, VOICE_REGS, NLP_REGS
 
 from face import Face
 from base.gcai import GCAI, KEYS
-from base.utils import timestamp
+from gcutils import timestamp
 from nlp import NLP
 from voice import Voice
 from voice.sound import Player, Recorder

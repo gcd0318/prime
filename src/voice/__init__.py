@@ -13,7 +13,7 @@ from pydub import AudioSegment
 
 from config import TMP_PATH
 from .sound import Player, Recorder
-from base.utils import timestamp
+from gcutils import timestamp
 
 class Voice(object):
 
@@ -45,12 +45,16 @@ class Voice(object):
         return res
 
     def tts(self, txt, filename):
-        mp3_name = TMP_PATH + filename + '.mp3'
+        mp3_name = TMP_PATH + filename
+        if not mp3_name.endswith('.mp3'):
+            mp3_name = mp3_name + '.mp3'
         r = self.client.synthesis(txt,'zh', 1, {'vol': 5, 'per': 1,})
 
         if not isinstance(r, dict):
             with open(mp3_name, 'wb') as f:
                 f.write(r)
+        else:
+            print(r)
         sound = AudioSegment.from_file(mp3_name, format = 'MP3')
         os.remove(mp3_name)
         wav_filename = TMP_PATH + filename

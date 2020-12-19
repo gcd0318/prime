@@ -22,11 +22,6 @@ def post_json(url, headers=None, data=None):
         res = resp.text
     return res
 
-def timestamp(t=None, fmt='%Y%m%d_%H%M%S'):
-    if t is None:
-        t = time.localtime()
-    return time.strftime(fmt, t)
-
 def weekday(t=None):
     if t is None:
         t = datetime.date.today()

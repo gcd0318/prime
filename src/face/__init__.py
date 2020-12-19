@@ -75,7 +75,7 @@ class Face(object):
         if options is None:
 #            options = {"user_info": "user's info", "quality_control": "NORMAL", "liveness_control": "LOW", "action_type": "REPLACE"}
              options = {}
-        if not(group_id in self.client.getGroupList(, {"length": 50})):
+        if not(group_id in self.client.getGroupList({"start":0, "length": 50})):
             self.client.groupAdd(group_id)
         self.client.addUser(self.image, self.imageType, group_id, user_id, options)
 
